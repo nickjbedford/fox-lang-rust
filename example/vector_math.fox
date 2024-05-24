@@ -1,0 +1,43 @@
+# built-in definition
+type Real = f32 | f64 | decimal
+
+# 3D-vector record type (pass-by-value)
+record vector3 of T where Real
+	T x
+	T y
+	T z
+
+	static zero = this(0, 0, 0)
+
+	oper + this := auto
+	oper - this := auto
+	oper * T rhs := this(x * rhs, y * rhs, z * rhs)
+	oper / T rhs := this(x / rgs, y / rhs, z / rhs)
+
+	get T length := sqrt(x * x + y * y + z * z)
+
+	set T length :=
+		len = length
+		guard len > 0
+		mul = value / len
+		x *= mul
+		y *= mul
+		z *= mul
+
+	get this unit :=
+		match len = length
+			0 => this(0, 0, 0)
+			default => this(x / len, y / len, z / len)
+
+	reflect this normal :=
+		self - (v.dot(n) * 2) * normal
+
+incident = Vec3(1, -1, 0).unit
+normal = Vec3(0, 1, 0)
+reflected = incident.reflect(normal)
+
+(f32 -> f32) sine = (f32 x -> f32) := sin(x)
+
+Maybe of (f32 -> f32)
+
+y = sine(PI)

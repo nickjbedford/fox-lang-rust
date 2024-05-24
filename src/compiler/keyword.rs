@@ -1,32 +1,31 @@
-use std::collections::HashMap;
-use std::vec::Vec;
 use phf::phf_map;
 use phf::Map;
 
 pub enum Logical {
     If,
     Else,
-    Match
+    Match,
 }
 
 pub enum Declarative {
-    Data,
+    Record,
     Impl,
     Operator
 }
 
 pub enum Primitive {
-    Char,
-    Short,
-    Int,
-    Long,
-    Byte,
-    Word,
-    UInt,
-    ULong,
+    Int8,
+    Int16,
+    Int32,
+    Int64,
+    UInt8,
+    UInt16,
+    UInt32,
+    UInt64,
     Float,
     Double,
-    String
+    Decimal,
+    String,
 }
 
 pub enum Keyword {
@@ -40,22 +39,22 @@ static KEYWORD_MAP: Map<&'static str, Keyword> = phf_map! {
     "else" => Keyword::Logical(Logical::Else),
     "match" => Keyword::Logical(Logical::Match),
 
-    "data" => Keyword::Declarative(Declarative::Data),
-    "impl" => Keyword::Declarative(Declarative::Impl),
-    "operator" => Keyword::Declarative(Declarative::Operator),
+    "record" => Keyword::Declarative(Declarative::Record),
+    "oper" => Keyword::Declarative(Declarative::Operator),
 
-    "char" => Keyword::Primitive(Primitive::Char),
-    "short" => Keyword::Primitive(Primitive::Short),
-    "int" => Keyword::Primitive(Primitive::Int),
-    "long" => Keyword::Primitive(Primitive::Long),
+    "char" => Keyword::Primitive(Primitive::Int8),
+    "short" => Keyword::Primitive(Primitive::Int16),
+    "int" => Keyword::Primitive(Primitive::Int32),
+    "long" => Keyword::Primitive(Primitive::Int64),
 
-    "byte" => Keyword::Primitive(Primitive::Byte),
-    "word" => Keyword::Primitive(Primitive::Word),
-    "uint" => Keyword::Primitive(Primitive::UInt),
-    "ulong" => Keyword::Primitive(Primitive::ULong),
+    "u8" => Keyword::Primitive(Primitive::UInt8),
+    "u16" => Keyword::Primitive(Primitive::UInt16),
+    "u32" => Keyword::Primitive(Primitive::UInt32),
+    "u64" => Keyword::Primitive(Primitive::UInt64),
 
-    "float" => Keyword::Primitive(Primitive::Float),
-    "double" => Keyword::Primitive(Primitive::Double),
+    "f32" => Keyword::Primitive(Primitive::Float),
+    "f64" => Keyword::Primitive(Primitive::Double),
+    "decimal" => Keyword::Primitive(Primitive::Decimal),
     
     "string" => Keyword::Primitive(Primitive::String),
 };

@@ -1,0 +1,20 @@
+type SignedInteger = i8 | i16 | i32 | i64
+type UnsignedInteger = u8 | u16 | u32 | u64
+type Integer = SignedInteger | UnsignedInteger
+type Real = f32 | f64
+type Numeric = Integer | Real | decimal
+
+# constraint sum parameters to same numeric type
+sum of T where Numeric T a, T b := a + b
+
+# no need for generic
+sum Sequence of Numeric seq := seq |> reduce(sum, 0)
+
+# Compute the sum of the odd numbers between a lower and upper bound
+sum_odd_numbers Numeric lower, Numeric upper :=
+	[lower...upper] |> filter(x := x % 2 == 0) |> sum
+
+factorial Numeric n :=
+	ret match n
+		0 => 1
+		default => n * factorial(n - 1)
