@@ -1,21 +1,30 @@
-protocol Sequence of T, K
-	get iterator -> Iterator :=
-	get count -> u64 :=
-	get [u64 index] :=
+type Size = u64
+type Index = u64
 
-enum Maybe of T
-	Some(T)
+record Pair of Key/Value
+	Key first
+	Value second
+
+export enum Maybe of Value
+	Some(Value)
 	None
 
-enum Result of T, E = string
-	Okay(T)
-	Error(E)
+trait Sequence of Key = Index/Value
+	get iterator -> Iterator of Pair of Key/Value :=
+	get count -> Size :=
+	get [Index index] -> Maybe of Value :=
 
-find of K, T (Sequence of K, T sequence, T item) -> Maybe of K :=
-	for key in sequence.keys
-		if sequence[key] == item
-			ret Some(key)
-	ret None
+impl Filterable of Pair of Key/Value on Sequence of Key/Value
+	filter (Pair of Key/Value) -> bool predicate := filter(sequence, predicate)
+
+enum Result of Value, Err = string
+	Okay(Value)
+	Error(Err)
+
+find of Value/Key (Sequence of Key/Value sequence, Value element) -> Maybe of Key :=
+	ret match sequence.filter(item := item.second == element)[0]
+		Some(key, _) => Some(key)
+		None => None
 
 reduce of T, R (Sequence of T sequence, (R, T) -> R accumulator, R initial) -> R :=
 	ret match sequence[0]
@@ -29,7 +38,7 @@ fold of T, R (Sequence of T sequence, ((Maybe of R, T) -> R) accumulator) -> May
 
 main :=
 	a = [ 1, 2, 3, 4, 5 ]
-	i = find(a, 3) // i == 2
+	i = find(a, 3) # i == 2
 
 	mut i32[] a
 
@@ -40,11 +49,12 @@ main :=
 
 	interp = "${a}"
 
+
 	b = [
 		"hello" => 1,
 		"goodbye" => 2,
 		"what?" => 3
 	]
-	key = find(b, 2) // key == "goodbye"
+	key = find(b, 2) # key == "goodbye"
 
 	b = a[1..] // [ 2, 3, 4, 5 ]

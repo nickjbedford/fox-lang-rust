@@ -1,0 +1,22 @@
+module ui
+
+export record Point
+	i32 x
+	i32 y
+
+	oper + self := auto
+	oper - self := auto
+
+export trait Control
+	get string text :=
+	set text -> string :=
+	get Point position :=
+	set Point position :=
+
+
+export record Button
+	private string _text
+
+impl Control on Button
+	get text := "Button"
+	set text -> string := "Button"
