@@ -14,10 +14,17 @@ pub enum Literal
 }
 
 /// Token used for parsing.
-pub enum Token {
+pub enum TokenKind {
     Keyword(Keyword),
     Operator(Operator),
     Literal(Literal),
-    Comment,
-    CommentBlock,
+    LineComment,
+    BlockComment { terminated: bool},
+}
+
+pub struct Token {
+    pub kind: TokenKind,
+    pub value: std::ops::Range<usize>,
+    pub line: usize,
+    pub column: usize,
 }
