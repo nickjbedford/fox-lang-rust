@@ -1,18 +1,47 @@
 use phf::phf_map;
 use phf::Map;
 
-pub enum Logical {
+/// Keyword used for logic statements.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Logic {
     If,
     Else,
     Match,
+    Return,
 }
 
+/// Keyword used for declarative statements.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Declarative {
     Record,
+    Enum,
+    Trait,
     Impl,
-    Operator
+    Operator,
+    Type,
+    New,
+    SelfType,
+    Import,
+    Module,
 }
 
+/// Modifier keywords.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Modifier {
+    Mut,
+    Get,
+    Set,
+    Static,
+    Private,
+    Of,
+    On,
+    Auto,
+    Where,
+    Export,
+}
+
+/// Keyword used for primitive types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Primitive {
     Int8,
     Int16,
@@ -26,21 +55,44 @@ pub enum Primitive {
     Double,
     Decimal,
     String,
+    This,
 }
 
+/// Type of keyword.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Keyword {
-    Logical(Logical),
+    Logic(Logic),
     Declarative(Declarative),
-    Primitive(Primitive)
+    Primitive(Primitive),
+    Modifier(Modifier),
 }
 
 static KEYWORD_MAP: Map<&'static str, Keyword> = phf_map! {
-    "if" => Keyword::Logical(Logical::If),
-    "else" => Keyword::Logical(Logical::Else),
-    "match" => Keyword::Logical(Logical::Match),
+    "if" => Keyword::Logic(Logic::If),
+    "else" => Keyword::Logic(Logic::Else),
+    "match" => Keyword::Logic(Logic::Match),
+    "ret" => Keyword::Logic(Logic::Return),
 
     "record" => Keyword::Declarative(Declarative::Record),
+    "enum" => Keyword::Declarative(Declarative::Enum),
+    "trait" => Keyword::Declarative(Declarative::Trait),
     "oper" => Keyword::Declarative(Declarative::Operator),
+    "impl" => Keyword::Declarative(Declarative::Impl),
+    "type" => Keyword::Declarative(Declarative::Type),
+    "new" => Keyword::Declarative(Declarative::New),
+    "self" => Keyword::Declarative(Declarative::SelfType),
+    "import" => Keyword::Declarative(Declarative::Import),
+    "module" => Keyword::Declarative(Declarative::Module),
+
+    "mut" => Keyword::Modifier(Modifier::Mut),
+    "get" => Keyword::Modifier(Modifier::Get),
+    "set" => Keyword::Modifier(Modifier::Set),
+    "of" => Keyword::Modifier(Modifier::Of),
+    "on" => Keyword::Modifier(Modifier::On),
+    "static" => Keyword::Modifier(Modifier::Static),
+    "auto" => Keyword::Modifier(Modifier::Auto),
+    "where" => Keyword::Modifier(Modifier::Where),
+    "export" => Keyword::Modifier(Modifier::Export),
 
     "char" => Keyword::Primitive(Primitive::Int8),
     "short" => Keyword::Primitive(Primitive::Int16),
@@ -57,4 +109,5 @@ static KEYWORD_MAP: Map<&'static str, Keyword> = phf_map! {
     "decimal" => Keyword::Primitive(Primitive::Decimal),
     
     "string" => Keyword::Primitive(Primitive::String),
+    "this" => Keyword::Primitive(Primitive::This),
 };
